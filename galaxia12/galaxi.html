@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Galaxia de amor 💖</title>
+
+<style>
+body {
+  margin: 0;
+  overflow: hidden;
+  background: radial-gradient(circle, #0b0c2a, #000);
+  font-family: Arial, sans-serif;
+}
+
+canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+
+/* 💖 PALABRAS */
+.palabra {
+  position: absolute;
+  color: white;
+  font-size: 18px;
+  opacity: 0.8;
+  animation: flotar linear infinite;
+  z-index: 6;
+}
+
+@keyframes flotar {
+  from {
+    transform: translateY(100vh);
+  }
+  to {
+    transform: translateY(-10vh);
+  }
+}
+
+/* 📸 FOTOS */
+@keyframes flotarFoto {
+  0% {
+    transform: scale(0.5) translateY(50px);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.2) translateY(-120vh);
+    opacity: 0;
+  }
+}
+
+/* 💕 CORAZONES */
+.corazon {
+  position: absolute;
+  font-size: 20px;
+  animation: subirCorazon linear infinite;
+  z-index: 5;
+}
+
+@keyframes subirCorazon {
+  from {
+    transform: translateY(100vh);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(-10vh);
+    opacity: 0;
+  }
+}
+
+/* 🎵 BOTÓN ANIMADO */
+.boton{
+position:absolute;
+bottom:20px;
+left:50%;
+transform:translateX(-50%);
+padding:12px 25px;
+border:none;
+border-radius:25px;
+color:white;
+font-size:16px;
+cursor:pointer;
+z-index:10;
+animation:colorCambio 5s infinite, flotarBoton 2s infinite ease-in-out;
+box-shadow:0 0 20px rgba(255,0,255,0.5);
+}
+
+@keyframes colorCambio{
+0%{background:#ff4fd8;}
+25%{background:#8a5cff;}
+50%{background:#4fd8ff;}
+75%{background:#ff7a7a;}
+100%{background:#ff4fd8;}
+}
+
+@keyframes flotarBoton{
+0%{transform:translateX(-50%) translateY(0);}
+50%{transform:translateX(-50%) translateY(-8px);}
+100%{transform:translateX(-50%) translateY(0);}
+}
+
+.boton:hover{
+transform:translateX(-50%) scale(1.1);
+}
+</style>
+</head>
+
+<body>
+
+<button class="boton" onclick="activarMusica()">❤️‍🔥 Música</button>
+
+<audio id="musica" loop>
+  <source src="musica.mp3" type="audio/mpeg">
+</audio>
+
+<canvas id="galaxia"></canvas>
+
+<script>
+const canvas = document.getElementById("galaxia");
+const ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+// 🌌 ESTRELLAS
+let estrellas = [];
+for (let i = 0; i < 300; i++) {
+  estrellas.push({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    size: Math.random() * 2,
+    speed: Math.random() * 1 + 0.3
+  });
+}
+
+function animar() {
+  ctx.fillStyle = "rgba(0,0,20,0.4)";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  ctx.fillStyle = "white";
+  estrellas.forEach(e => {
+    ctx.beginPath();
+    ctx.arc(e.x, e.y, e.size, 0, Math.PI * 2);
+    ctx.fill();
+
+    e.y += e.speed;
+    if (e.y > canvas.height) {
+      e.y = 0;
+      e.x = Math.random() * canvas.width;
+    }
+  });
+
+  requestAnimationFrame(animar);
+}
+animar();
+
+// 💬 PALABRAS
+const frases = [
+  "Karo 💖",
+  "Te amo 💕",
+  "Mi amor 💗",
+  "Hermosa ✨",
+  "Eres todo 😍"
+];
+
+function crearPalabra() {
+  const palabra = document.createElement("div");
+  palabra.classList.add("palabra");
+  palabra.innerHTML = frases[Math.floor(Math.random() * frases.length)];
+
+  palabra.style.left = Math.random() * window.innerWidth + "px";
+  palabra.style.fontSize = (Math.random() * 20 + 15) + "px";
+  palabra.style.animationDuration = (Math.random() * 5 + 5) + "s";
+
+  document.body.appendChild(palabra);
+
+  setTimeout(() => palabra.remove(), 8000);
+}
+setInterval(crearPalabra, 400);
+
+// 💖 CORAZONES
+function crearCorazon() {
+  const corazon = document.createElement("div");
+  corazon.classList.add("corazon");
+  corazon.innerHTML = Math.random() > 0.5 ? "🥰" : "❤️‍🔥";
+
+  corazon.style.left = Math.random() * window.innerWidth + "px";
+  corazon.style.animationDuration = (Math.random() * 3 + 3) + "s";
+
+  document.body.appendChild(corazon);
+
+  setTimeout(() => corazon.remove(), 6000);
+}
+setInterval(crearCorazon, 500);
+
+// 📸 FOTOS
+const fotos = ["foto1.jpg","foto2.jpg","foto3.jpg"];
+
+function crearFoto() {
+  const img = document.createElement("img");
+
+  img.src = fotos[Math.floor(Math.random() * fotos.length)];
+  img.style.position = "absolute";
+  img.style.left = Math.random() * window.innerWidth + "px";
+  img.style.top = "100vh";
+  img.style.width = (Math.random() * 80 + 60) + "px";
+  img.style.borderRadius = "12px";
+  img.style.boxShadow = "0 0 15px pink";
+  img.style.zIndex = "7";
+  img.style.animation = "flotarFoto 8s linear forwards";
+
+  document.body.appendChild(img);
+
+  setTimeout(() => img.remove(), 8000);
+}
+setInterval(crearFoto, 1500);
+
+// 🎵 MUSICA
+function activarMusica() {
+  const musica = document.getElementById("musica");
+  musica.volume = 0.3;
+  musica.play();
+}
+</script>
+
+</body>
+</html>
